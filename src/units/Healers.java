@@ -27,7 +27,9 @@ public class Healers extends BaseHero {
                 index = i;
             }
         }
-        healing(heroList.get(index));
+        if (max > 0) {
+            healing(heroList.get(index));
+        }
     }
 
 
