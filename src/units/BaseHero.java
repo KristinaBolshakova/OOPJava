@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.Random;
 
 public abstract class BaseHero implements HeroInterface {
-    protected String name, type;
-    protected int attack, defence, health, maxhealth, speed;
-    protected int[] damage;
+    public String name, type;
+    public int attack, defence, health, maxhealth, speed;
+    public int[] damage;
 
 
     public BaseHero(String name, String type, int attack, int defence, int[] damage, int health, int speed) {
