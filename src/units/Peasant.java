@@ -6,12 +6,12 @@ import java.util.ArrayList;
 public class Peasant extends BaseHero {
     public boolean delivery;
 
-    public Peasant(String name, String type, int attack, int defence, int[] damage, int health, int speed) {
-        super(name, type, attack, defence, damage, health, speed);
+    public Peasant(ArrayList<BaseHero> heroTeam, String name, String type, int attack, int defence, int[] damage, int health, int speed, int x, int y) {
+        super(heroTeam, name, type, attack, defence, damage, health, speed, x, y);
     }
 
-    public Peasant(String name) {
-        super(name, "Крестьянин", 1, 1, new int[] {1, 1}, 1, 3);
+    public Peasant(ArrayList<BaseHero> heroTeam, String name, int x, int y) {
+        super(heroTeam, name, "Крестьянин", 1, 1, new int[] {1, 1}, 1, 3, x, y);
         this.delivery = true;
 
     }

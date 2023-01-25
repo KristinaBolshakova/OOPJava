@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Archer extends BaseHero {
     protected int shoots, maxShoots;
 
-    public Archer(String name, String type, int attack, int defence, int shoots, int[] damage, int health, int speed) {
-        super(name, type, attack, defence, damage, health, speed);
+    public Archer(ArrayList<BaseHero> heroTeam, String name, String type, int attack, int defence, int shoots, int[] damage, int health, int speed, int x, int y) {
+        super(heroTeam, name, type, attack, defence, damage, health, speed, x, y);
         this.shoots = shoots;
         this.maxShoots = shoots;
     }
@@ -14,7 +14,7 @@ public class Archer extends BaseHero {
 
     @Override
     public String toString() {
-        return super.toString() + "shoots=" + shoots;
+        return super.toString() + "shoots=" + shoots + "maxShoots" + maxShoots;
     }
 
 
