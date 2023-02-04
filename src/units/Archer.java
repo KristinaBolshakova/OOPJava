@@ -20,11 +20,29 @@ public class Archer extends BaseHero {
 
     @Override
     public void step(ArrayList<BaseHero> heroList) {
+        if (health == 0){
+            return;
+        }
+        Vector2 target = getTarget(heroList);
+        float consMin = 12;
+        float consMax = 4;
+        float attackPower;
+        if (target.x <= consMax){
+            attackPower = damage[1];
+        }else if (target.x >= consMin){
+            attackPower = damage[0];
+        }
+        else {
+            attackPower = damage[0] + ((target.x - consMax) / (consMin-consMax)) * (damage[1] - damage[0]);
+        }
+
+
         boolean stepShoot = true;
-        for (BaseHero hero : heroList) {
+        for (BaseHero hero : teamList) {
             if (hero.type.equals("Peasant")) {
                 if (((Peasant) hero).delivery) {
-                    System.out.printf("\n%s %s совершил выстрел и потратил 0 стрел. Осталось %d стрел", name, type, shoots, maxShoots);
+                    heroList.get((int) target.y).getDamage(attackPower);
+                    System.out.printf("\n%s %s совершил выстрел в персонажа %s %s и нанёс %f урона, потратив 0 стрел. Осталось %d стрел ", name, type, heroList.get((int) target.y).name, heroList.get((int) target.y).type, attackPower, shoots, maxShoots);
                     ((Peasant) hero).delivery = false;
                     stepShoot = false;
                     break;
@@ -33,13 +51,26 @@ public class Archer extends BaseHero {
         }
         if (stepShoot) {
             if (shoots > 0) {
-                System.out.printf("\n%s %s совершил выстрел и потратил 1 стрелу. Осталось %d/%d стрел", name, type, --shoots, maxShoots);
+                heroList.get((int) target.y).getDamage(attackPower);
+                System.out.printf("\n%s %s совершил выстрел в персонажа %s %s нанёс %f урона и потратил 1 стрелу. Осталось %d/%d стрел ", name, type, heroList.get((int) target.y).name, heroList.get((int) target.y).type, attackPower, --shoots, maxShoots);
             }
         } else {
             System.out.printf("\n%s %s не может больше стрелять. Закончились стрелы %d/%d", name, type, shoots, maxShoots);
         }
     }
-}
 
+    public Vector2 getTarget(ArrayList<BaseHero> heroList) {
+        float minDistance = 100;
+        int minIndex = 0;
+        for (int i = 0; i < heroList.size(); i++){
+            float temp = getPosition().getDistance(heroList.get(0).getPosition().x, heroList.get(0).getPosition().y);
+            if (temp < minDistance && heroList.get(i).health > 0){
+                minDistance = temp;
+                minIndex = i;
+            }
+        }
+        return new Vector2(minDistance, minIndex);
+    }
+}
 
 

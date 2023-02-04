@@ -17,24 +17,30 @@ public class Healers extends BaseHero {
 
     @Override
     public void step(ArrayList<BaseHero> heroList) {
-        int max = 0;
+        if (health == 0){
+            return;
+        }
+        float max = 0;
         int index = 0;
-        for (int i = 0; i < heroTeam.size(); i++) {
-            int temp = ((maxhealth - health) * 100) / maxhealth;
-            if (temp > max) {
+        for (int i = 0; i < teamList.size(); i++) {
+            if (teamList.get(i).health == 0){
+                continue;
+            }
+            float temp = ((maxHealth - health) * 100) / maxHealth;
+            if (temp != 0 && temp > max) {
                 max = temp;
                 index = i;
             }
         }
         if (max > 0) {
-            healing(heroTeam.get(index));
+            healing(teamList.get(index));
         }
     }
 
 
     private void healing(BaseHero wounded) {
-        if ((wounded.health - damage[0]) > wounded.maxhealth) {
-            wounded.health = wounded.maxhealth;
+        if ((wounded.health - damage[0]) > wounded.maxHealth) {
+            wounded.health = wounded.maxHealth;
             System.out.println("\n" + name + "-" + type + " вылечил " + wounded.name + "-" + wounded.type + ". Здоровье: " + wounded.health);
         } else {
             wounded.health = wounded.health - damage[0];

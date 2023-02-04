@@ -18,7 +18,7 @@ public class Main {
             ConsoleView.view();
             System.out.println("Ходит WhiteSide");
             whiteSide.forEach(item -> item.step(darkSide));
-            System.out.println("Ходит DarkSide");
+            System.out.println("\nХодит DarkSide");
             darkSide.forEach(item -> item.step(whiteSide));
             scanner.nextLine();
         }
