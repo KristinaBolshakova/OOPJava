@@ -1,6 +1,7 @@
 import units.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -11,14 +12,14 @@ public class Main {
 
     public static void main(String[] args) {
         init();
-
+        Comparator<BaseHero> comparator = Comparator.comparing(BaseHero::getSpeed);
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            ConsoleView.view();
-            System.out.println("Ходит WhiteSide");
+            nextTurn(comparator);
+            System.out.println(AnsiColors.ANSI_BLUE + "\nХодит WhiteSide" + AnsiColors.ANSI_RESET);
             whiteSide.forEach(item -> item.step(darkSide));
-            System.out.println("\nХодит DarkSide");
+            System.out.println(AnsiColors.ANSI_GREEN + "\nХодит DarkSide" + AnsiColors.ANSI_RESET);
             darkSide.forEach(item -> item.step(whiteSide));
             scanner.nextLine();
         }
@@ -37,10 +38,10 @@ public class Main {
 
         for (int i = 0; i < GANG_SIZE; i++) {
             switch (rand.nextInt(4)) {
-                case 0 -> whitePeasant.add(new Peasant(whiteSide, nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
-                case 1 -> whiteSide.add(new Outlaw(whiteSide, nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
-                case 2 -> whiteSide.add(new Sniper(whiteSide, nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
-                default -> whiteSide.add(new Sorcerer(whiteSide, nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
+                case 0 -> whitePeasant.add(new Farmer(whiteSide, "White", nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
+                case 1 -> whiteSide.add(new Rogue(whiteSide, "White", nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
+                case 2 -> whiteSide.add(new Sniper(whiteSide, "White", nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
+                default -> whiteSide.add(new Sorcerer(whiteSide, "White", nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
             }
         }
         whiteSide.addAll(whitePeasant);
@@ -50,13 +51,18 @@ public class Main {
 
         for (int i = 0; i < GANG_SIZE; i++) {
             switch (rand.nextInt(4)) {
-                case 0 -> darkPeasant.add(new Peasant(darkSide, nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
-                case 1 -> darkSide.add(new Spearman(darkSide, nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
-                case 2 -> darkSide.add(new Crossbowman(darkSide, nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
-                default -> darkSide.add(new Monk(darkSide, nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
+                case 0 -> darkPeasant.add(new Farmer(darkSide, "Dark", nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
+                case 1 -> darkSide.add(new Spearman(darkSide, "Dark", nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
+                case 2 -> darkSide.add(new Crossbowman(darkSide, "Dark", nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
+                default -> darkSide.add(new Monk(darkSide, "Dark", nameHeroes[rand.nextInt(nameHeroes.length)], x, y++));
             }
 
         }
         darkSide.addAll(darkPeasant);
+    }
+    public static void nextTurn(Comparator<BaseHero> comparator) {
+        ConsoleView.view();
+        whiteSide.sort(comparator.reversed());
+        darkSide.sort(comparator.reversed());
     }
 }

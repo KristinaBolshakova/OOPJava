@@ -3,9 +3,10 @@ import java.util.ArrayList;
 
 public class Healers extends BaseHero {
     int mana;
+    boolean pass = false;
 
-    public Healers(ArrayList<BaseHero> heroTeam, String name, String type, int attack, int defence, int[] damage, int health, int speed, int mana, int x, int y) {
-        super(heroTeam, name, type, attack, defence, damage, health, speed, x, y);
+    public Healers(ArrayList<BaseHero> team, String teamName, String name, String role, int attack, int defence, int[] damage, int health, int speed, int mana, int x, int y) {
+        super(team, teamName, name, role, attack, defence, damage, health, speed, x, y);
         this.mana = mana;
     }
 
@@ -20,6 +21,11 @@ public class Healers extends BaseHero {
         if (health == 0){
             return;
         }
+        if (isPass()) {
+            setPass(false);
+            return;
+        }
+        resurrect();
         float max = 0;
         int index = 0;
         for (int i = 0; i < teamList.size(); i++) {
@@ -46,6 +52,35 @@ public class Healers extends BaseHero {
             wounded.health = wounded.health - damage[0];
             System.out.println("\n" + name + "-" + type + " вылечил " + wounded.name + "-" + wounded.type + ". Здоровье: " + wounded.health);
         }
+    }
+    protected void resurrect() {
+        for (BaseHero deadHero: teamList) {
+            if (deadHero.healthColor() == 0) {
+
+                Vector2 tempCell = deadHero.getPosition();
+                ArrayList<BaseHero> tempTeam = deadHero.teamList;
+                int index = tempTeam.indexOf(deadHero);
+
+                System.out.println("\n" + this.getType() + " " + this.getName() +
+                        " resurrects " + deadHero.getName());
+
+                BaseHero newHero = UnitCreator.createRandomUnit(deadHero, tempCell);
+
+                tempTeam.set(index, newHero);
+                setPass(true);
+
+                System.out.println(newHero.getType() + " " + newHero.getName() +
+                        " now alive ✨");
+                return;
+            }
+        }
+    }
+    private boolean isPass() {
+        return pass;
+    }
+
+    private void setPass(boolean b) {
+        this.pass = b;
     }
 }
 

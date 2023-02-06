@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Melee extends BaseHero {
-    public Melee(ArrayList<BaseHero> heroTeam,  String name, String type, int attack, int defence, int[] damage, int health, int speed, int x, int y) {
-        super(heroTeam, name, type, attack, defence, damage, health, speed, x, y);
+    public Melee(ArrayList<BaseHero> heroTeam,  String teamName, String name, String type, int attack, int defence, int[] damage, int health, int speed, int x, int y) {
+        super(heroTeam, teamName, name, type, attack, defence, damage, health, speed, x, y);
     }
     @Override
     public void step(ArrayList<BaseHero> heroList) {
@@ -26,6 +26,7 @@ public class Melee extends BaseHero {
 
         if (target.x < 2) {
             heroList.get((int) target.y).getDamage(attackPower);
+            System.out.println("\n" + getType() + " " + getName() + " нанес " + attackPower + " урона персонажу " + heroList.get((int) target.y).name);
         } else if (targetRight) {
             setPosition(++getPosition().x, getPosition().y);
         } else if (targetLeft) {

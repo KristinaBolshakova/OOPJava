@@ -18,4 +18,10 @@ public class Vector2 {
         float dy = y - this.y;
         return (float) Math.sqrt(dx * dx + dy * dy);
     }
+
+    public int getX() {return (int) x;
+    }
+
+    public int getY() {return (int) y;
+    }
 }
